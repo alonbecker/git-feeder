@@ -4,35 +4,43 @@ require 'json'
 require 'yaml'
 require 'git'
 
-CONFIG = YAML.load_file("config.yml") unless defined? CONFIG
-git = Git.open ('../..')
+module GitFeed
 
-commits = git.log(2)
-commit = ''
-last_commit = ''
+  class Publish 
 
-commits.each_with_index do |sha1, idx|
-  commit = git.gcommit(sha1) if idx == 0
-  last_commit = git.gcommit(sha1) if idx == 1
-end
+    CONFIG = YAML.load_file('config.yml') unless defined? CONFIG 
 
-files = Array.new
+    def initialize(feed = 'git', path = '../../')
+      git = Git.open (path)
 
-git.diff(commit, last_commit).each do |file|
-   files.push(file.path)
-end
+      commits = git.log(2)
+      commit = ''
+      last_commit = ''
 
-puts git.gcommit(git.log(1)).name
+      commits.each_with_index do |sha1, idx|
+        commit = git.gcommit(sha1) if idx == 0
+        last_commit = git.gcommit(sha1) if idx == 1
+      end
+
+      files = Array.new
+
+      git.diff(commit, last_commit).each do |file|
+         files.push(file.path)
+      end
  
-data = 
-  {
-    "user" 	=> commit.author.name, 
-    "email" 	=> commit.author.email,
-    "date" 	=> commit.date.strftime("%Y-%m-%d %H:%M:%S %z"),
-    "msg" 	=> commit.message,
-    "branch" 	=> commit.name,
-    "files" 	=> files
-  }
+      data = 
+      {
+        "user" 	=> commit.author.name, 
+        "email"	=> commit.author.email,
+        "date" 	=> commit.date.strftime("%Y-%m-%d %H:%M:%S %z"),
+        "msg" 	=> commit.message,
+        "branch"=> commit.name,
+        "files"	=> files
+      }
 
-$redis = Redis.new(:host => "#{CONFIG['host']}", :port => "#{CONFIG['port']}")
-$redis.publish 'git', data.to_json
+      puts CONFIG['host']
+      $redis = Redis.new(:host => "#{CONFIG['host']}", :port => "#{CONFIG['port']}")
+      $redis.publish feed, data.to_json
+    end
+  end
+end
