@@ -9,7 +9,7 @@ CONFIG = YAML.load_file("config.yml") unless defined? CONFIG
 puts "hello #{CONFIG['host']}"
 
 $redis = Redis.new(:host => "#{CONFIG['host']}", :port => "#{CONFIG['port']}")
-#test
+#test2
 data = {"user" => ARGV[1]}
 
 loop do
