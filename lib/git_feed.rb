@@ -1,4 +1,4 @@
-require_relative "git_feed/version"
+#require_relative "git_feed/version"
 require 'rubygems'
 require 'redis'
 require 'json'
