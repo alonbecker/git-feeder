@@ -17,5 +17,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "redis"
   gem.add_development_dependency "git"
   gem.add_development_dependency "json"
-  gem.add_development_dependency "yaml"
 end

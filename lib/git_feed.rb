@@ -5,10 +5,11 @@ require 'json'
 require 'yaml'
 require 'git'
 
+
 module GitFeed
 
   class GitFeed 
-
+    #Config file must be placed in the .git/hooks/directory
     CONFIG = YAML.load_file('config.yml') unless defined? CONFIG 
 
     def initialize(feed = 'git', path = '../')
