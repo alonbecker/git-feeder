@@ -1,24 +1,28 @@
 # GitFeed
 
-TODO: Write a gem description
+Git feed application. Feeds commit data from post-commit hook in git to a remote Redis server
 
 ## Installation
 
-Add this line to your application's Gemfile:
+First download git repo
 
-    gem 'git_feed'
+Run the following Rake command inside the downloaded repo
+    rake install
+    
+Create a config.yml file under the .git/hooks directory of your git repository. The host parameter will point to your Redis instance
+The port will be your Redis port. The config.yml file will look as follows:
+    :host 127.0.0.1 
+    :port 6379
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install git_feed
+Create a 2 line ruby script named post-commit in the .git/hooks repository of your git repository. It will look as follows:
+    #!/usr/bin/env ruby
+    require 'git_feed'
+    
+    GitFeed::GitFeed.new(feed='git',path='../../')
 
 ## Usage
 
-TODO: Write usage instructions here
+Git feed application. Feeds commit data from post-commit hook in git to a remote Redis server
 
 ## Contributing
 
