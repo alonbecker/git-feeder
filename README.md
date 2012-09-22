@@ -6,10 +6,14 @@ Git feed application. Feeds commit data from post-commit hook in git to a remote
 
 First download git repo
 
-Runthe following Rake command inside the downloaded repo
+Run the following Rake command inside the downloaded repo
     
     rake install
     
+Install the following gems
+
+    gem install redis git json yaml 
+
 Create a config.yml file under the .git/hooks directory of your git repository. The host parameter will point to your Redis instance
 The port will be your Redis port. The config.yml file will look as follows:
     
